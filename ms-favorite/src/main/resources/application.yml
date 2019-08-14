@@ -1,0 +1,16 @@
+server:
+  port: 8020
+
+spring:
+  application:
+    name: favorite-service
+  data:
+     mongodb:
+        host: 172.16.12.27
+        prot: 27017
+        database: springcloud
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/

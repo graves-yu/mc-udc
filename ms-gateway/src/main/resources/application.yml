@@ -1,0 +1,19 @@
+server:
+  port: 8000
+spring:
+  profiles:
+    active: after_route
+
+#新建一个配置文件
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        #当请求的时间在这个配置的时间之后，请求会被路由到http://httpbin.org:80/get。
+        - After=2019-08-08T00:00:00.789-07:00[America/Denver]
+  #配置文件名
+  profiles: after_route
