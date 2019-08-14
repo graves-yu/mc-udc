@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+eureka:
+  instance:
+    hostname: ms-registercenter
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring:
+  application:
+    name: ms-registercenter
+      
+

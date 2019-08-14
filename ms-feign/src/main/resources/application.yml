@@ -1,0 +1,14 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+server:
+  port: 9999
+spring:
+  application:
+    name: ms-feign
+
+# Feign 自带断路器，低版本的SpringCloud中默认没有打开，需要在配置文件中配置  
+feign:
+  hystrix:
+    enabled: ture
