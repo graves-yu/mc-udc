@@ -1,0 +1,12 @@
+#application.yml配置本地项目启动加载如服务端口server.port=8041 
+#注：为什么不直接把配置全部直接写入application.yml而是另建bootstrap.yml： 
+#因为config部分的配置先于 application.yml 被加载，而 bootstrap.yml 中的配置会先于 application.yml 加载，
+#如果直接写在application.yml会导致项目启动时无法读取到配置中心配置文件导致报错。
+spring:
+  application:
+    name: ms-feign # 对应config-server所获取的配置文件的{application}
+  cloud:
+    config:
+      uri: http://localhost:8200/
+      profile: dev # 指定profile，对应config-server所获取的配置文件中的{profile}
+      label: master # 指定git仓库的分支，对应config-server所获取的配置文件的{label}
