@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ import com.fonsview.udc.bookmark.utils.Utils;
  * @author hoob
  * @date 2018年11月12日下午1:39:06
  */
+@RefreshScope
 @RestController
 @RequestMapping("/")
 public class BookmarkController {
@@ -43,6 +45,13 @@ public class BookmarkController {
 	
 	@Value("${server.port}")
     String port;
+	
+	@Value("${name}")
+	String name;
+	@RequestMapping(value = "/hi")
+	public String hi(){
+		return name;
+	}
 	
 	/**
 	 * 添加书签

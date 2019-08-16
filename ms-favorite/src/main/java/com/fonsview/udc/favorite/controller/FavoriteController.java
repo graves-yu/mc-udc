@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ import com.fonsview.udc.favorite.utils.ResponseUtils;
 import com.fonsview.udc.favorite.utils.StringUtils;
 import com.fonsview.udc.favorite.utils.Utils;
 
+@RefreshScope
 @RestController
 @RequestMapping("/")
 public class FavoriteController {    
@@ -33,7 +36,14 @@ public class FavoriteController {
 
 	@Autowired
 	private FavoriteService favoriteService;
-
+	
+	@Value("${name}")
+	String name;
+	@RequestMapping(value = "/hi")
+	public String hi(){
+		return name;
+	}
+	
 	/**
 	 * 添加收藏
 	 * @param json
