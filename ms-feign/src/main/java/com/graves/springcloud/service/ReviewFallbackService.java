@@ -3,8 +3,6 @@
  */
 package com.graves.springcloud.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 /**  
@@ -27,7 +25,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object addScore(String userId, String body, HttpServletRequest request) {
+	public Object addScore(String userId, String body) {
 		return String.format("addScore is error: [userId:%s--body:%s]",userId, body);
 	}
 
@@ -42,7 +40,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object getAvgScore(String userId, String contentId, HttpServletRequest request) {
+	public Object getAvgScore(String userId, String contentId) {
 		return String.format("getAvgScore is error: [userId:%s--contentId:%s]",userId, contentId);
 	}
 
@@ -57,7 +55,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object addRecommendation(String userId, String body, HttpServletRequest request) {
+	public Object addRecommendation(String userId, String body) {
 		return String.format("addRecommendation is error: [userId:%s--body:%s]",userId, body);
 	}
 
@@ -71,7 +69,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object countRecommendation(String contentId, HttpServletRequest request) {
+	public Object countRecommendation(String contentId) {
 		return String.format("getContentRecommendation is error: [contentId:%s]", contentId);
 	}
 
@@ -85,7 +83,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object addComment(String body, HttpServletRequest request) {
+	public Object addComment(String body) {
 		return String.format("addComment is error: [body:%s]", body);
 	}
 
@@ -102,8 +100,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object getComment(String contentId, String commentId, Integer begin, Integer pagesize,
-			HttpServletRequest request) {
+	public Object getComment(String contentId, String commentId, Integer begin, Integer pagesize) {
 		return String.format("getContentRecommendation is error: [contentId:%s--commentId:%s--begin:%s--pagesize:%s]",
 					contentId, commentId, begin, pagesize);
 	}
@@ -118,7 +115,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object addReminder(String body, HttpServletRequest request) {
+	public Object addReminder(String body) {
 		return String.format("addReminder is error: [body:%s]", body);
 	}
 
@@ -134,7 +131,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object removeReminder(String contentId, String userId, String mediaType, HttpServletRequest request) {
+	public Object removeReminder(String contentId, String userId, String mediaType) {
 		return String.format("removeReminder is error: [contentId:%s--userId:%s--mediaType:%s]", contentId, userId, mediaType);
 	}
 
@@ -150,7 +147,7 @@ public class ReviewFallbackService implements ReviewService{
 	 * @return  
 	 */ 
 	@Override
-	public Object reminderList(String userId, String contentId, String mediaType, HttpServletRequest request) {
+	public Object reminderList(String userId, String contentId, String mediaType) {
 		return String.format("getReminderList is error: [userId:%s--contentId:%s--mediaType:%s]",
 				userId, contentId, mediaType);
 	}
