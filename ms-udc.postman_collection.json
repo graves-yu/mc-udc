@@ -1,0 +1,895 @@
+{
+	"info": {
+		"_postman_id": "449ac684-ad89-45e6-b7e2-6f317db66644",
+		"name": "Springcloud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bookmark",
+			"item": [
+				{
+					"name": "添加书签",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0e47daca-8fe4-4728-a032-d55d26af88dd",
+								"exec": [
+									"var a = Math.round(Math.random()*10)",
+									"var b = Math.round(Math.random()*10)",
+									"pm.globals.set(\"userId\", \"uid00\"+a);",
+									"pm.globals.set(\"contentId\", \"cId00\"+b);",
+									"pm.globals.set(\"name\", \"UDCAutoTest{{$timestamp}}\");",
+									"",
+									"var index = Math.round(Math.random()*10)",
+									"pm.globals.set(\"index\", index);",
+									"",
+									"pm.globals.set(\"pcontentId\", \"cId00\"+ b + \"_\" + index);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "18189fc6-c7f2-4322-9649-e107ef647978",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body('{\"resultCode\":0,\"description\":\"Success\"}');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contentId\":\"{{contentId}}\",\r\n    \"name\":\"测试v1书签_{{name}}\",\r\n    \"pContentId\":\"{{pcontentId}}\",\r\n    \"index\":\"{{index}}\",\r\n    \"episodeName\":\"第{{index}}集\",\r\n    \"time\":\"2999\",\r\n    \"length\":3000,\r\n    \"thumbnailUrl\":\"www.testv1bookmark.com\",\r\n    \"userId\":\"{{userId}}\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9999/bookmark/addBookmark?synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"bookmark",
+								"addBookmark"
+							],
+							"query": [
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取书签",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6672af9-c8f4-4a77-84e2-cf6f4f5b1758",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include('\"resultCode\":0');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/bookmark/listBookmark?userid={{userId}}&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"bookmark",
+								"listBookmark"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取书签数",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/bookmark/countBookmark?userid={{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"bookmark",
+								"countBookmark"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除书签",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d4b4ae73-16ed-4a56-bfdc-f586a8ba15f9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body('{\"resultCode\":0,\"description\":\"Success\"}');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/bookmark/removeBookmark?userid={{userId}}&pcontentids={{contentId}}&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"bookmark",
+								"removeBookmark"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "pcontentids",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "核查书签",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d86a1c8-3971-4164-ae7f-20c567f7d78f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include('\"resultCode\":0');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/bookmark/checkBookmark?userid={{userId}}&contentid={{contentId}}&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"bookmark",
+								"checkBookmark"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "favorite",
+			"item": [
+				{
+					"name": "添加收藏",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0e47daca-8fe4-4728-a032-d55d26af88dd",
+								"exec": [
+									"var a = Math.round(Math.random()*10)",
+									"var b = Math.round(Math.random()*10)",
+									"pm.globals.set(\"userId\", \"uid00\"+a);",
+									"pm.globals.set(\"contentId\", \"cId00\"+b);",
+									"",
+									"var index = Math.round(Math.random()*10)",
+									"pm.globals.set(\"index\", index);",
+									"",
+									"pm.globals.set(\"pcontentId\", \"cId00\"+ b + \"_\" + index);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "18189fc6-c7f2-4322-9649-e107ef647978",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body('{\"resultCode\":0,\"description\":\"Success\"}');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contentId\" : \"{{contentId}}\",\r\n    \"name\" : \"测试favorite_{{contentId}}\",\r\n    \"thumbnailUrl\" : \"www.{{name}}.com\",\r\n    \"mediaType\" : \"2\",\r\n    \"userId\" : \"{{userId}}\",\r\n    \"reserved\" : \"none\",\r\n    \"subName\" : \"subName{{$guid}}\",\r\n    \"cornerMark\" : \"cm001\",\r\n    \"programType\" : \"springcloud测试\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9999/favorite/addFavorite?synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"favorite",
+								"addFavorite"
+							],
+							"query": [
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取收藏",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6672af9-c8f4-4a77-84e2-cf6f4f5b1758",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include('\"resultCode\":0');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/favorite/listFavorite?userid={{userId}}&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"favorite",
+								"listFavorite"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取收藏数",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/favorite/countFavorite?userid={{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"favorite",
+								"countFavorite"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除书签",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d4b4ae73-16ed-4a56-bfdc-f586a8ba15f9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body('{\"resultCode\":0,\"description\":\"Success\"}');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/favorite/removeFavorite?userid={{userId}}&contentids={{contentId}}&mediatype=2&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"favorite",
+								"removeFavorite"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "contentids",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "mediatype",
+									"value": "2"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "核查书签",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d86a1c8-3971-4164-ae7f-20c567f7d78f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include('\"resultCode\":0');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/favorite/checkFavorite?userid={{userId}}&contentid={{contentId}}&synchronize=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"favorite",
+								"checkFavorite"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "synchronize",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "review",
+			"item": [
+				{
+					"name": "用户评分",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91f41b0e-866e-40c9-b1a6-85754f3fb829",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "430de3be-aa87-4808-a5a6-b7c46cfe1d9e",
+								"exec": [
+									"var a = Math.round(Math.random()*50)",
+									"var b = Math.round(Math.random()*20)",
+									"pm.globals.set(\"userId\", \"uId\"+a);",
+									"pm.globals.set(\"contentId\", \"cId\"+b);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contentId\":\"{{contentId}}\",\n\t\"score\":9\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9999/review/addScore?userid={{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"review",
+								"addScore"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "内容评分",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91f41b0e-866e-40c9-b1a6-85754f3fb829",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "430de3be-aa87-4808-a5a6-b7c46cfe1d9e",
+								"exec": [
+									"var a = Math.round(Math.random()*50)",
+									"var b = Math.round(Math.random()*20)",
+									"pm.globals.set(\"userId\", \"uId\"+a);",
+									"pm.globals.set(\"contentId\", \"cId\"+b);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contentId\":\"{{contentId}}\",\n\t\"score\":9\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9999/review/getContentScore?contentid={{contentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"review",
+								"getContentScore"
+							],
+							"query": [
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户踩赞",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a3a7ac0c-e9ad-4a76-b1b2-6d09be993d64",
+								"exec": [
+									"var a = Math.round(Math.random()*10000)",
+									"var b = Math.round(Math.random()*10000)",
+									"pm.globals.set(\"userId\", \"uId\"+a);",
+									"pm.globals.set(\"contentId\", \"cId\"+b);",
+									"",
+									"var choice = Math.round(Math.random()*10)",
+									"choice = choice % 2 == 1 ? \"A\":\"V\"",
+									"pm.globals.set(\"choice\", choice);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contentId\":\"{{contentId}}\",\n\t\"choice\":\"{{choice}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9999/review/addRecommendation?userid={{userId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"review",
+								"addRecommendation"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取内容踩赞数",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/review/getCountRecommendation?contentid={{contentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"review",
+								"getCountRecommendation"
+							],
+							"query": [
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户评论",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\":\"{{userId}}\",\n\t\"contentId\":\"{{contentId}}\",\n\t\"comment\":\"评论{{$guid}}\",\n\t\"commentParentId\":\"\"\n}"
+						},
+						"url": "http://localhost:9999/review/addComment"
+					},
+					"response": []
+				},
+				{
+					"name": "获取评论",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/review/getComment?contentid={{contentId}}&commentid=5c75eb40872128490045efef&begin=2&pagesize=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"review",
+								"getComment"
+							],
+							"query": [
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "commentid",
+									"value": "5c75eb40872128490045efef"
+								},
+								{
+									"key": "begin",
+									"value": "2"
+								},
+								{
+									"key": "pagesize",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reminder",
+			"item": [
+				{
+					"name": "添加提醒",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contentId\":\"{{contentId}}\",\n\t\"name\":\"{{name}}\",\n\t\"userId\":\"{{userId}}\",\n\t\"mediaType\":\"3\",\n\t\"reminderStrategy\":\"1\",\n\t\"currentEpisodes\":\"1\"\n}"
+						},
+						"url": "http://localhost:9999/reminder/addReminder"
+					},
+					"response": []
+				},
+				{
+					"name": "删除提醒",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/reminder/removeReminder?contentid={{contentId}}&userid={{userId}}&mediatype=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"reminder",
+								"removeReminder"
+							],
+							"query": [
+								{
+									"key": "contentid",
+									"value": "{{contentId}}"
+								},
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "mediatype",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取用户提醒列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9999/reminder/getReminder?userid={{userId}}&mediatype=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"reminder",
+								"getReminder"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "{{userId}}"
+								},
+								{
+									"key": "mediatype",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
