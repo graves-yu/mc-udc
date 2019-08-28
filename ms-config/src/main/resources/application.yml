@@ -1,0 +1,32 @@
+server:
+  port: 8000
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+
+#1：客户端的spring.application.name配置config-clent是和Git服务器上面的文件名相对应的，如果你的客户端是其他名字就报错找不到参数。作者的Git上面是有这个config-client-dev的配置文件的所以是config-clent，作者在这里没有说明，大家注意。2：客户端加载到的配置文件的配置项会覆盖本项目已有配置，比如客户端你自己配置的端口是8881，但是如果读取到config-clent-dev这个配置文件中也有配置端口为8882，那么此时客户端访问的地址应该是8882.
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/graves-yu/config-repository   # 配置git仓库的地址
+          search-paths: ms-udc/ms-bookmark,ms-udc/ms-favorite,ms-udc/ms-review,ms-udc/ms-reminder,ms-udc/ms-feign,ms-udc/ms-gateway # git仓库地址下的相对地址，可以配置多个，用,分割。
+          lable: master #配置仓库的分支
+          username: # git仓库的账号
+          password: # git仓库的密码
+  rabbitmq:  #本地环境不需要配置mq，但是需要启动mq,Springboot会自动连接本地mq
+    host: localhost
+    port: 5672
+    username: graves
+    password: yuyong
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
