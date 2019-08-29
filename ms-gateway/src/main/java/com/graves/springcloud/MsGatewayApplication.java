@@ -4,11 +4,14 @@ import java.util.Date;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -55,4 +58,27 @@ public class MsGatewayApplication {
 		Date date = new Date();
 		return "Hi,I'm hystrix --By Graves " + date.toString();
 	}
+	
+
+	//	IP限流
+	//	可以通过KeyResolver来指定限流的Key,比如我们需要根据用户来做限流，IP来做限流等等。
+	@Bean
+	public KeyResolver ipKeyResolver() {
+		return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+	}
+
+	//	用户限流
+	//	使用这种方式限流，请求路径中必须携带userId参数
+	@Bean
+	KeyResolver userKeyResolver() {
+		return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("userId"));
+	}
+	
+	//	接口限流
+	//	获取请求地址的uri作为限流key
+	@Bean
+	KeyResolver apiKeyResolver() {
+		return exchange -> Mono.just(exchange.getRequest().getPath().value());
+	}
+
 }
