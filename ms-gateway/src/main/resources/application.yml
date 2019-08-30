@@ -1,0 +1,41 @@
+server:
+  port: 9999
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+
+spring:
+  application:
+    name: gateway
+  redis:
+    host: 172.16.0.36
+    port: 6379
+  cloud:
+    gateway:
+      routes:
+      - id: feign
+        uri: lb://feign
+        #lb:lb代表从注册中心获取服务，后面接需要转发到的服务名称，这个服务名称必须跟eureka中的对应
+        predicates:
+          - Path=/*/**
+        # /*/** 匹配 路由为 /bookmark/getBookmarkList、 /favorite/getFavoriteList 等请求
+        filters:
+            - name: RequestRateLimiter
+              args:
+                #需要与上边的方法名保持一致
+                rate-limiter: "#{@systemRedisRateLimiter}"
+                #需要与策略类的方法名保持一致。
+                key-resolver: "#{@sysKeyResolver}"
+
+#与配置类RateLimiterConf保持一致
+ratelimiter-conf:
+  #配置限流参数与RateLimiterConf类映射
+  rateLimitMap:
+    #格式为：routeid(gateway配置routes时指定的).系统名称.replenishRate(流速)/burstCapacity令牌桶大小
+    feign.replenishRate: 1
+    feign.burstCapacity: 1
+
+        
+        

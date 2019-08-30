@@ -1,14 +1,25 @@
 package com.graves.springcloud;
 
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.graves.springcloud.filter.SystemRedisRateLimiter;
+
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -55,4 +66,21 @@ public class MsGatewayApplication {
 		Date date = new Date();
 		return "Hi,I'm hystrix --By Graves " + date.toString();
 	}
+	
+	@Bean
+	 KeyResolver sysKeyResolver(){
+	 	  //从请求地址中截取sys值，进行限流。
+	     return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("userid"));
+	 }
+
+	@Bean
+	@Primary
+	//使用自己定义的限流类
+	SystemRedisRateLimiter systemRedisRateLimiter(
+	        ReactiveRedisTemplate<String, String> redisTemplate,
+	        @Qualifier(SystemRedisRateLimiter.REDIS_SCRIPT_NAME) RedisScript<List<Long>> script,
+	        Validator validator){
+	    return new SystemRedisRateLimiter(redisTemplate , script , validator);
+	}
+
 }
